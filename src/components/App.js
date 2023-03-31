@@ -98,7 +98,6 @@ function App() {
           </fieldset>
         }
       />
-      <Footer />
     </div>
   );
 }
