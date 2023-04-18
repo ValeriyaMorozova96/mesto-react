@@ -25,21 +25,30 @@ export class Api {
             })
             .then(this._getServerReply)
     }
-    changeProfileData(data) {
+    changeProfileData({ name, about }) {
         return fetch(`${this._url}/users/me`,
             {
                 method: 'PATCH',
                 headers: this._headers,
-                body: JSON.stringify({ name: data.name, about: data.about })
+                body: JSON.stringify({ name, about })
             })
             .then(this._getServerReply)
     }
-    addNewCard(newCardData) {
+    changeUserAvatar({ avatar }) {
+        return fetch(`${this._url}/users/me/avatar`,
+            {
+                headers: this._headers,
+                method: 'PATCH',
+                body: JSON.stringify({ avatar })
+            })
+            .then(this._getServerReply)
+    }
+    addNewCard({ name, link }) {
         return fetch(`${this._url}/cards`,
             {
                 method: 'POST',
                 headers: this._headers,
-                body: JSON.stringify({ name: newCardData.name, link: newCardData.link })
+                body: JSON.stringify({ name, link })
             })
             .then(this._getServerReply)
     }
@@ -51,13 +60,22 @@ export class Api {
             })
             .then(this._getServerReply)
     }
-    putLike(id) {
-        return fetch(`${this._url}/cards/${id}/likes`,
-            {
-                method: 'PUT',
-                headers: this._headers
-            })
-            .then(this._getServerReply)
+    changeLikeCardStatus(id, isLiked) {
+        if (isLiked) {
+            return fetch(`${this._url}/cards/${id}/likes`,
+                {
+                    method: 'PUT',
+                    headers: this._headers
+                })
+                .then(this._getServerReply)
+        } else {
+            return fetch(`${this._url}/cards/${id}/likes`,
+                {
+                    method: 'DELETE',
+                    headers: this._headers,
+                })
+                .then(this._getServerReply)
+        }
     }
 }
 
